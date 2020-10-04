@@ -35,7 +35,7 @@ stage ('DeployToTomcat')
 stage ('EmailStatusToTeam')
     {
         mail bcc: '', body: '''Deploy Process Is Completed... Please check the console output for more details.
-        BUILD_NUMBER
+        echo env.BUILD_NUMBER
         Thanks,
         DevOps.''', cc: '', from: '', replyTo: '', subject: 'Build Deploy Status', to: 'anuroop.rv@gmail.com'
     }
