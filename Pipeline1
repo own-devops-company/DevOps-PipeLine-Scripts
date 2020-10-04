@@ -1,0 +1,43 @@
+node
+{
+
+echo "Branch Number is ${env.BUILD_NUMBER}"
+def mavenHome = tool name: "maven3.6.3"
+
+stage ('CodeCheckOut')    
+    {
+        git branch: 'dev', credentialsId: '92d472bc-41d8-471b-92c2-5d2bc835a9d4', url: 'https://github.com/own-devops-company/java-web-app.git'
+    }
+
+stage ('MavenBuild')
+    {
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+
+stage ('GenerateSonarQubeReport')
+    {
+        sh "${mavenHome}/bin/mvn clean sonar:sonar"
+    }
+
+stage ('UploadArtifactNexus')
+    {
+        sh "${mavenHome}/bin/mvn deploy"
+    }
+
+stage ('DeployToTomcat')
+    {
+        sshagent(['TomcatCredentials'])
+        {
+            sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.233.233.244:/opt/apache-tomcat-9.0.38/webapps/"
+        }
+    }
+
+stage ('EmailStatusToTeam')
+    {
+        mail bcc: '', body: '''Deploy Process Is Completed... Please check the console output for more details.
+       
+        Thanks,
+        DevOps.''', cc: '', from: '', replyTo: '', subject: 'Build Deploy Status', to: 'anuroop.rv@gmail.com'
+    }
+
+}
