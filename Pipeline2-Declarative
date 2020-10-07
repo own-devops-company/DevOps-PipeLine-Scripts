@@ -1,4 +1,4 @@
-* Declarative pipeline must be enclosed within a pipeline block */
+/* Declarative pipeline must be enclosed within a pipeline block */
 pipeline {
      /*agent section specifies where the entire Pipeline script will execute in the Jenkins environment */
     agent any
@@ -45,7 +45,7 @@ pipeline {
         
         stage('CheckoutCode') {
             steps {
-                git branch: 'stage', credentialsId: 'fc8c3d87-2a92-4de9-9e00-c38f5e780b97', url: 'https://github.com/MithunTechnologiesDevOps/maven-web-application.git'
+                git branch: 'stage', credentialsId: '92d472bc-41d8-471b-92c2-5d2bc835a9d4', url: 'https://github.com/own-devops-company/java-web-app.git'
             
                 sh "echo CF_VERSION ${CF_VERSION}"
             }
@@ -73,8 +73,8 @@ pipeline {
         stage('DeployApplicationIntoTomcat') {
             steps {
             // provide SSH credentials to builds via a ssh-agent in Jenkins
-              sshagent(['293267cf-8c00-4465-a36f-4ed77134166e']) {
-                 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.15.29.188:/opt/tomcat9/webapps/"
+              sshagent(['TomcatCredentials']) {
+                 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.36.194:/opt/apache-tomcat-9.0.38/webapps/"
                } 
             }
         }
@@ -90,24 +90,24 @@ pipeline {
             cleanWs()
         }
         success {   
-               mail to: 'devopstrainingblr@gmail.com',
-                    bcc: 'devopstrainingblr@gmail.com',
-                    cc: 'devopstrainingblr@gmail.com', 
-                    from: 'devopstrainingblr@gmail.com', 
-                    replyTo: 'devopstrainingblr@gmail.com',
-                    subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-                    body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}."
+               mail to: 'anuroop.rv@gmail.com',
+                    bcc: '',
+                    cc: '', 
+                    from: 'anuroop.yv@gmail.com', 
+                    replyTo: '',
+                    subject: "Declarative Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
+                    body: "Declarative Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}."
                    
             cleanWs()
         }
         failure {
-            mail to: 'devopstrainingblr@gmail.com',
-                    bcc: 'devopstrainingblr@gmail.com',
-                    cc: 'devopstrainingblr@gmail.com', 
-                    from: 'devopstrainingblr@gmail.com', 
-                    replyTo: 'devopstrainingblr@gmail.com',
-                    subject: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
-                    body: "Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}."
+            mail to: 'anuroop.rv@gmail.com',
+                    bcc: '',
+                    cc: '', 
+                    from: 'anuroop.yv@gmail.com', 
+                    replyTo: '',
+                    subject: "Declarative Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}.",
+                    body: "Declarative Pipeline Build is over .. Build # is ..${env.BUILD_NUMBER} and Build status is.. ${currentBuild.result}."
                    
         }
     }
