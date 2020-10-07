@@ -45,7 +45,7 @@ pipeline {
         
         stage('CheckoutCode') {
             steps {
-                git branch: 'stage', credentialsId: '92d472bc-41d8-471b-92c2-5d2bc835a9d4', url: 'https://github.com/own-devops-company/java-web-app.git'
+                git branch: 'dev', credentialsId: '92d472bc-41d8-471b-92c2-5d2bc835a9d4', url: 'https://github.com/own-devops-company/java-web-app.git'
             
                 sh "echo CF_VERSION ${CF_VERSION}"
             }
