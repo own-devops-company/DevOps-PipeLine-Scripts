@@ -74,7 +74,7 @@ pipeline {
             steps {
             // provide SSH credentials to builds via a ssh-agent in Jenkins
               sshagent(['TomcatCredentials']) {
-                 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.36.194:/opt/apache-tomcat-9.0.38/webapps/"
+                 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.36.194:/opt/apache-tomcat-9.0.38/webapps"
                } 
             }
         }
